@@ -14,4 +14,4 @@ def firstAPI(request):
         'name': 'Shahid Afridi',
         'country': 'Bangladesh'
     }
-    return Response(context)
+    return Response(context,headers={'Access-Control-Allow-Origin': 'http://127.0.0.1:5500'})

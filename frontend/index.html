@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django Rest API</title>
+</head>
+
+<body>
+    <h1>Firstapp GET METHOD</h1>
+    <div id="dataContainer">
+        <h3 id="name"></h3>
+        <h3 id="country"></h3>
+    </div>
+
+
+    <script>
+
+        // Fetch data from the backend API
+        fetch('http://localhost:8000/api/firstapp/first/')
+            .then(response => response.json())
+            .then(data => {
+                console.log('the data is',data)
+                const name = data.name
+                const country = data.country
+                    
+                // Update the content of the 'name' element
+                const nameElement = document.getElementById('name');
+                nameElement.textContent = 'Name: '+name;
+                const countryElement = document.getElementById('country');
+                countryElement.textContent = 'country: '+country;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+
+    </script>
+
+
+</body>
+
+</html>
