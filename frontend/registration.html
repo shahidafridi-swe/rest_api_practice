@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+<body>
+    <h1>User Registration</h1>
+    <form id="registrationForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required><br><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br><br>
+
+        <label for="password1">Password:</label>
+        <input type="password" id="password1" name="password1" required><br><br>
+
+        <label for="password2">Confirm Password:</label>
+        <input type="password" id="password2" name="password2" required><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Make a POST request to the registration API
+            fetch('http://localhost:8000/api/firstapp/registration/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else if (data.success) {
+                    alert(data.success);
+                    form.reset(); // Reset the form
+                }
+            })
+            .catch(error => {
+                console.error('Error during registration:', error);
+            });
+        });
+    </script>
+</body>
+</html>
