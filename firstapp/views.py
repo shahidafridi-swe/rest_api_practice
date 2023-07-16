@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User
 
 from .models import Contact
+from .serializers import ContactSerializer
 
 
 @api_view(['POST'])
@@ -61,20 +62,13 @@ class ContactAPIView(APIView):
     permission_classes = [AllowAny,]
 
     def post(self, request, format=None):
-        data = request.data
-        name = data['name']
-        email = data['email']
-        subject = data['subject']
-        phone = data['phone']
-        details = data['details']
+        serializer = ContactSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
 
-        contact = Contact(name=name, email=email,
-                          subject=subject, phone=phone, details=details)
+        return Response({"success": "The contact has been successfully saved !", "data": serializer.data}, headers={'Access-Control-Allow-Origin': 'http://127.0.0.1:5500'})
 
-        contact.save()
-
-        return Response({"success": "The contact has been successfully saved !"}, headers={'Access-Control-Allow-Origin': 'http://127.0.0.1:5500'})
-    
     def get(self, request, format=None):
-
-        return Response({"success": "The contact has been successfully saved ! From get"}, headers={'Access-Control-Allow-Origin': 'http://127.0.0.1:5500'})
+        queryset = Contact.objects.all()
+        serializer = ContactSerializer(queryset, many=True)
+        return Response({"success": "The contact has been successfully saved ! From get", "data": serializer.data}, headers={'Access-Control-Allow-Origin': 'http://127.0.0.1:5500'})
